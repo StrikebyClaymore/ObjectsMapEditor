@@ -39,18 +39,23 @@ func update_tile_set(value: Array) -> void:
 
 func create_tiles(idx: int, t: Texture) -> void:
 	tile_textures[idx].clear()
+	
+	var path_split: PoolStringArray = t.get_path().split("/")
+	var _name: String = path_split[path_split.size()-1]
+	_name.erase(_name.length()-4, 4)
 	var img = t.get_data()
 	img.lock()
 	for y in img.get_height() / tile_size:
 		for x in img.get_width() / tile_size:
 			var new_img: Image = img.get_rect(Rect2(x*tile_size, y*tile_size, tile_size, tile_size))
-			create_texture(idx, new_img)
+			create_texture(idx, new_img, _name)
 	img.unlock()
 	pass
 
-func create_texture(idx: int, img: Image) -> void:
+func create_texture(idx: int, img: Image, _name: String) -> void:
 	var img_tex = ImageTexture.new()
 	img_tex.create_from_image(img, 0)
+	img_tex.resource_name = _name
 	tile_textures[idx].append(img_tex)
 
 func set_map_plugin(m: EditorPlugin) -> void:

@@ -15,6 +15,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id=2]
+resource_name = "closet_no_door"
 flags = 0
 flags = 0
 image = SubResource( 11 )
@@ -30,6 +31,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id=4]
+resource_name = "closet_with_lock_atlas"
 flags = 0
 flags = 0
 image = SubResource( 12 )
@@ -45,6 +47,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id=6]
+resource_name = "closet_with_lock_atlas"
 flags = 0
 flags = 0
 image = SubResource( 13 )
@@ -60,6 +63,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id=8]
+resource_name = "closet_with_lock_atlas"
 flags = 0
 flags = 0
 image = SubResource( 14 )
@@ -75,6 +79,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id=10]
+resource_name = "closet_with_lock_atlas"
 flags = 0
 flags = 0
 image = SubResource( 15 )
