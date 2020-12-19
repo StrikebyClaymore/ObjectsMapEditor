@@ -90,5 +90,8 @@ script = ExtResource( 4 )
 
 [node name="ObjectsMap" type="Node2D" parent="."]
 script = ExtResource( 1 )
+draw_grid = false
+grid_color = Color( 0.0745098, 0.0666667, 0.188235, 1 )
+cursor_grid_color = Color( 0.788235, 0.701961, 0, 1 )
 tile_set = [ ExtResource( 3 ), ExtResource( 2 ) ]
 tile_textures = [ [ SubResource( 2 ) ], [ SubResource( 4 ), SubResource( 6 ), SubResource( 8 ), SubResource( 10 ) ] ]

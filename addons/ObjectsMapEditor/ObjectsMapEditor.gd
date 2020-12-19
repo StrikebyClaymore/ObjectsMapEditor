@@ -14,8 +14,13 @@ func handles(object) -> bool:
 
 func edit(object) -> void:
 	if object == selected_objects_map: return
+	
+	if selected_objects_map:
+			selected_objects_map.draw_grid = false
+			
 	selected_objects_map = object as ObjectsMap
 	if selected_objects_map:
+		selected_objects_map.draw_grid = true
 		_make_visible(true)
 		selected_objects_map.set_map_plugin(self)
 		add_tiles_to_panel(selected_objects_map.tile_textures)
@@ -34,6 +39,9 @@ func forward_canvas_gui_input(ev: InputEvent): # -> bool
 			pass
 		elif ev.pressed and ev.button_index == BUTTON_RIGHT:
 			pass
+	if ev is InputEventMouseMotion:
+		if selected_objects_map:
+			selected_objects_map.update()
 
 func set_selected_map_object(object: TextureButton) -> void:
 	pass
