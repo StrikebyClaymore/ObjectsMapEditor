@@ -36,10 +36,6 @@ config/name="ObjectsMapEditor"
 run/main_scene="res://World.tscn"
 config/icon="res://icon.png"
 
-[editor_plugins]
-
-enabled=PoolStringArray( "ObjectsMapEditor" )
-
 [importer_defaults]
 
 texture={

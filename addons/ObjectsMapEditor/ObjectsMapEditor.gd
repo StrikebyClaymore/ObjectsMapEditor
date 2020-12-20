@@ -6,6 +6,9 @@ var map_obj_tscn: PackedScene = preload("res://addons/ObjectsMapEditor/MapObject
 var main_editor_panel: Control
 var bottom_editor_panel: Control
 
+var cursor: TextureRect
+var default_cursor_offset: = Vector2(16, 16)
+
 var selected_objects_map: ObjectsMap
 var selected_map_object: MapObject
 
@@ -43,11 +46,16 @@ func forward_canvas_gui_input(ev: InputEvent): # -> bool
 			pass
 	if ev is InputEventMouseMotion:
 		if selected_objects_map:
+			#var scene_root = get_tree().get_edited_scene_root()
+			#var mouse_coords = scene_root.get_global_mouse_position()
+			cursor.rect_global_position = get_viewport().get_mouse_position() - default_cursor_offset
 			selected_objects_map.update()
 
 func set_selected_map_object(object: TextureButton) -> void:
 	#printt("123", object.texture_normal)
 	#Input.set_custom_mouse_cursor(object.texture_normal)
+	cursor.texture = object.texture_normal
+	cursor.visible = true
 	pass
 
 func add_tiles_to_panel(tileset: Array) -> void:
@@ -95,7 +103,9 @@ func _enter_tree() -> void:
 	panel_button = main_editor_panel.get_node("Panels/BottomButton")
 	panel_button.rect_min_size.y = OS.window_size.y/2
 	panel_button.connect("pressed", self, "_on_BottomButton_pressed")
-
+	
+	cursor = main_editor_panel.get_node("Cursor")
+	
 	#bottom_editor_panel = load("res://addons/TileMapObjectsEditor/BottomPanel.tscn").instance()
 	#bottom_editor_panel.rect_size.x = main_editor_panel.rect_size.x
 	#main_editor_panel.add_child(bottom_editor_panel)
@@ -105,17 +115,16 @@ func _enter_tree() -> void:
 	_make_visible(false)
 	pass
 
+func _exit_tree() -> void:
+	remove_control_from_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_SIDE_RIGHT, main_editor_panel)
+	#remove_control_from_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT, bottom_editor_panel)
+	pass
+
 func _on_TopButton_pressed():
 	main_editor_panel.get_node("Panels/BottomButton").pressed = false
 
 func _on_BottomButton_pressed():
 	main_editor_panel.get_node("Panels/TopButton").pressed = false
-
-
-func _exit_tree() -> void:
-	remove_control_from_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_SIDE_RIGHT, main_editor_panel)
-	#remove_control_from_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT, bottom_editor_panel)
-	pass
 
 func _make_visible(visible: bool) -> void:
 	var panels: VBoxContainer = main_editor_panel.get_node("Panels")
@@ -130,8 +139,10 @@ func _make_visible(visible: bool) -> void:
 	panels.get_node("BottomButton").visible = visible
 	panels.visible = visible
 	#main_editor_panel.get_node("BottomPanel").visible = visible
+	cursor.visible = visible
 	
 	main_editor_panel.visible = visible
+	
 #	box = bottom_editor_panel.get_node("VBoxContainer")
 #	for c in box.get_children():
 #		#c.visible = visible

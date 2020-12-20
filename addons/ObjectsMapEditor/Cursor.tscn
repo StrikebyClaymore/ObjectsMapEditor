@@ -1,0 +1,11 @@
+[gd_scene format=2]
+
+[node name="Cursor" type="TextureRect"]
+modulate = Color( 1, 1, 1, 0.6 )
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
