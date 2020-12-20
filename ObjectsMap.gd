@@ -132,3 +132,13 @@ func tile_to_position(t: Vector2) -> Vector2:
 #
 #func position_to_id(p: Vector2):
 #	return tile_to_id(position_to_tile(p))
+
+export var _update: bool = false setget update_func
+
+func update_func(value: bool) -> void:
+	#_update = value
+	#Input.set_custom_mouse_cursor(load("res://Images/closet.png"))
+	#ProjectSettings.set("display/mouse_cursor/custom_image", load("res://Images/closet.png"))
+	pass
+
+

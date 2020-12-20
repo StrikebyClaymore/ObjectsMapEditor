@@ -28,6 +28,8 @@ func edit(object) -> void:
 	else:
 		#print(main_editor_panel, " ", main_editor_panel.get_parent())
 		#print(object)
+		
+		#Input.set_custom_mouse_cursor(null, Input.CURSOR_ARROW)
 		if object is Node:
 			_make_visible(false)
 
@@ -44,6 +46,8 @@ func forward_canvas_gui_input(ev: InputEvent): # -> bool
 			selected_objects_map.update()
 
 func set_selected_map_object(object: TextureButton) -> void:
+	#printt("123", object.texture_normal)
+	#Input.set_custom_mouse_cursor(object.texture_normal)
 	pass
 
 func add_tiles_to_panel(tileset: Array) -> void:
