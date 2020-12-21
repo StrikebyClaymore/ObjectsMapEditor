@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "TextureButton",
+"base": "Button",
 "class": "MapObject",
 "language": "GDScript",
 "path": "res://addons/ObjectsMapEditor/MapObject.gd"
@@ -35,6 +35,10 @@ _global_script_class_icons={
 config/name="ObjectsMapEditor"
 run/main_scene="res://World.tscn"
 config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "ObjectsMapEditor" )
 
 [importer_defaults]
 

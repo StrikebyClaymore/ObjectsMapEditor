@@ -9,52 +9,61 @@ var bottom_editor_panel: Control
 var cursor: TextureRect
 var default_cursor_offset: = Vector2(16, 16)
 
-var selected_objects_map: ObjectsMap
-var selected_map_object: MapObject
+var selected_map: ObjectsMap
+
+var selected_main_object: MapObject
+var selected_object: MapObject
+
+var selected_tile: Vector2
 
 func handles(object) -> bool:
 	return true
 
 func edit(object) -> void:
-	if object == selected_objects_map: return
+	if object == selected_map: return
 	
-	if selected_objects_map:
-			selected_objects_map.draw_grid = false
+	if selected_map:
+			selected_map.draw_grid = false
 			
-	selected_objects_map = object as ObjectsMap
-	if selected_objects_map:
-		selected_objects_map.draw_grid = true
+	selected_map = object as ObjectsMap
+	if selected_map:
+		selected_map.draw_grid = true
 		_make_visible(true)
-		selected_objects_map.set_map_plugin(self)
-		add_tiles_to_panel(selected_objects_map.tile_textures)
-		#print(selected_objects_map.tiles)
+		selected_map.set_map_plugin(self)
+		add_tiles_to_panel(selected_map.tile_textures)
 	else:
-		#print(main_editor_panel, " ", main_editor_panel.get_parent())
-		#print(object)
-		
-		#Input.set_custom_mouse_cursor(null, Input.CURSOR_ARROW)
 		if object is Node:
 			_make_visible(false)
 
 func forward_canvas_gui_input(ev: InputEvent): # -> bool
-	if not selected_objects_map: return
+	if not selected_map: return
 	if ev is InputEventMouseButton:
 		if not ev.pressed and ev.button_index == BUTTON_LEFT:
-			#selected_objects_map.tile_created()
+			#selected_map.tile_created()
 			pass
 		elif ev.pressed and ev.button_index == BUTTON_RIGHT:
 			pass
 	if ev is InputEventMouseMotion:
-		if selected_objects_map:
-			#var scene_root = get_tree().get_edited_scene_root()
-			#var mouse_coords = scene_root.get_global_mouse_position()
+		if selected_map:
 			cursor.rect_global_position = get_viewport().get_mouse_position() - default_cursor_offset
-			selected_objects_map.update()
+			selected_map.update()
+			pass
 
-func set_selected_map_object(object: TextureButton) -> void:
-	#printt("123", object.texture_normal)
-	#Input.set_custom_mouse_cursor(object.texture_normal)
-	cursor.texture = object.texture_normal
+func set_selected_map_object(object: MapObject) -> void:
+	if not object:
+		 return
+	if selected_object:
+		if object == selected_object: # Если новый объект это старый, то ничего не делать
+			return
+		elif selected_main_object and object.has_subtile:# and selected_object.has(object.textures[0])
+			selected_main_object.pressed = false
+			selected_object.pressed = false
+		elif not object.has_subtile and not selected_object.has_subtile:
+			selected_object.pressed = false
+	if object.has_subtile:
+		selected_main_object = object
+	selected_object = object # Присвоение нового объекта на котороый кликнули
+	cursor.texture = object.get_node("Icon").texture
 	cursor.visible = true
 	pass
 
@@ -88,6 +97,7 @@ func show_subtiles(textures: Array) -> void:
 	var b_box: VBoxContainer = main_editor_panel.get_node("Panels/BottomButton/Buttons")
 	for c in b_box.get_children():
 		c.queue_free()
+		b_box.remove_child(c)
 	for t in textures:
 		var o: = map_obj_tscn.instance()
 		o.init(self, b_box, b_box.get_child_count(), textures, t, false)
@@ -106,12 +116,6 @@ func _enter_tree() -> void:
 	
 	cursor = main_editor_panel.get_node("Cursor")
 	
-	#bottom_editor_panel = load("res://addons/TileMapObjectsEditor/BottomPanel.tscn").instance()
-	#bottom_editor_panel.rect_size.x = main_editor_panel.rect_size.x
-	#main_editor_panel.add_child(bottom_editor_panel)
-	
-	#add_control_to_container(EditorPlugin.CONTAINER_, bottom_editor_panel)
-	#add_control_to_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU)
 	_make_visible(false)
 	pass
 

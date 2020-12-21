@@ -13,6 +13,8 @@ export var tile_size: int = 32
 export (Array, Texture) var tile_set: = [] setget update_tile_set
 export var tile_textures: Array = []
 
+var old_pos: Vector2
+
 func set_grid(value: bool) -> void:
 	draw_grid = value
 	update()
@@ -60,19 +62,26 @@ func _draw() -> void:
 	
 	var _offset: = Vector2(tile_size/2, tile_size/2)
 	#pos -= Vector2(tile_size/2, tile_size/2)
-	pos = tile_to_position(position_to_tile(pos))
-	
+	pos = tile_to_position(position_to_tile(pos)) - _offset
 	#print(pos)
 	
 	for y in size.y / tile_size:
 		for x in size.x / tile_size:
-			var new_pos: = Vector2(pos.x + x*tile_size - _offset.x, pos.y + y*tile_size - _offset.y)
+			var new_pos: = Vector2(pos.x + x*tile_size, pos.y + y*tile_size)
 			draw_rect(Rect2(new_pos, Vector2(tile_size, tile_size)), grid_color, false)
 	
 #	for y in OS.window_size.y / tile_size:
 #		for x in OS.window_size.x / tile_size:
 #			draw_rect(Rect2(x*tile_size, y*tile_size, tile_size, tile_size), grid_color, false)
 	set_grid_around_cursor()
+
+#func get_mouse_pos() -> Vector2:
+#	var _offset: = Vector2(tile_size/2, tile_size/2)
+#	var pos: = tile_to_position(position_to_tile(get_global_mouse_position())) - _offset
+#	return pos
+#
+#func update_mouse_pos(pos: Vector2) -> void:
+#	old_pos = pos
 
 func set_grid_around_cursor() -> void:
 	var pos = tile_to_position(position_to_tile(get_global_mouse_position()))
@@ -81,12 +90,14 @@ func set_grid_around_cursor() -> void:
 	#print(get_global_mouse_position())
 	#print(pos)
 	
-	#print("START RECT")
-	for y in range(-1, 2):
-		for x in range(-1, 2):
-			var rect: = Rect2(pos.x + x*tile_size, pos.y + y*tile_size, tile_size, tile_size)
-			#print(rect)
-			draw_rect(rect, cursor_grid_color, false)
+	var rect: = Rect2(pos.x, pos.y, tile_size, tile_size)
+	draw_rect(rect, cursor_grid_color, false)
+	
+#	for y in range(-1, 2):
+#		for x in range(-1, 2):
+#			var rect: = Rect2(pos.x + x*tile_size, pos.y + y*tile_size, tile_size, tile_size)
+#			#print(rect)
+#			draw_rect(rect, cursor_grid_color, false)
 
 func create_tiles(idx: int, t: Texture) -> void:
 	tile_textures[idx].clear()
@@ -133,9 +144,22 @@ func tile_to_position(t: Vector2) -> Vector2:
 #func position_to_id(p: Vector2):
 #	return tile_to_id(position_to_tile(p))
 
+func convert_pos(pos: Vector2) -> Vector2:
+	#print(tile_to_position(position_to_tile(pos)) - Vector2(tile_size/2, tile_size/2)) 
+	return tile_to_position(position_to_tile(pos)) - Vector2(tile_size/2, tile_size/2)
+
+func calc_next_pos(pos: Vector2, dir: Vector2) -> Vector2:
+	dir = dir.normalized()
+	dir.x = ceil(dir.x)
+	dir.y = ceil(dir.y)
+	var _offset: = dir * tile_size
+	printt(dir, _offset)
+	return convert_pos(pos) + _offset
+
 export var _update: bool = false setget update_func
 
 func update_func(value: bool) -> void:
+	#printt(Vector2(2, -1).normalized())
 	#_update = value
 	#Input.set_custom_mouse_cursor(load("res://Images/closet.png"))
 	#ProjectSettings.set("display/mouse_cursor/custom_image", load("res://Images/closet.png"))
