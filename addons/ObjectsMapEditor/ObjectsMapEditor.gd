@@ -39,7 +39,7 @@ func forward_canvas_gui_input(ev: InputEvent): # -> bool
 	if not selected_map: return
 	if ev is InputEventMouseButton:
 		if not ev.pressed and ev.button_index == BUTTON_LEFT:
-			#selected_map.tile_created()
+			selected_map.spawn_object(selected_main_object, selected_object.idx if not selected_object.has_subtile else 0)
 			pass
 		elif ev.pressed and ev.button_index == BUTTON_RIGHT:
 			pass
@@ -67,10 +67,10 @@ func set_selected_map_object(object: MapObject) -> void:
 	cursor.visible = true
 	pass
 
-func add_tiles_to_panel(tileset: Array) -> void:
+func add_tiles_to_panel(all_textures: Array) -> void:
 	var t_box: VBoxContainer = main_editor_panel.get_node("Panels/TopButton/Buttons")
 #	var b_box: VBoxContainer = main_editor_panel.get_node("Panels/BottomButton/Buttons")
-	for textures in tileset:
+	for textures in all_textures:
 		if textures.empty(): continue
 		var o: = map_obj_tscn.instance()
 		o.init(self, t_box, t_box.get_child_count(), textures, textures[0])
@@ -100,7 +100,7 @@ func show_subtiles(textures: Array) -> void:
 		b_box.remove_child(c)
 	for t in textures:
 		var o: = map_obj_tscn.instance()
-		o.init(self, b_box, b_box.get_child_count(), textures, t, false)
+		o.init(self, b_box, b_box.get_child_count(), textures, t, false, selected_main_object.idx)
 
 func _enter_tree() -> void:
 	main_editor_panel = load("res://addons/ObjectsMapEditor/MainPanel.tscn").instance()

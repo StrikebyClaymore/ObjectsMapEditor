@@ -47,6 +47,15 @@ func update_tile_set(value: Array) -> void:
 	if objects_map_editor != null:
 		objects_map_editor.update_tiles(tile_textures)
 
+func spawn_object(object: MapObject, idx: int) -> void:#, pos: Vector2
+	var pos = tile_to_position(position_to_tile(get_global_mouse_position()))
+	#pos -= Vector2(tile_size/2, tile_size/2)
+	
+	var obj_name: String = object.get_node("Name").text.replace("_", "")
+	var obj_path: String = FileSystem.find_object_by_texture_name(obj_name)
+	var obj_instance = load(obj_path).instance()
+	obj_instance.init(self, obj_name, tile_set[object.tileset_idx], pos, true, idx)
+
 func _draw() -> void:
 	if not draw_grid: return# or not update_grid
 	
@@ -117,7 +126,11 @@ func create_tiles(idx: int, t: Texture) -> void:
 func create_texture(idx: int, img: Image, _name: String) -> void:
 	var img_tex = ImageTexture.new()
 	img_tex.create_from_image(img, 0)
-	img_tex.resource_name = _name
+	var split = _name.split("_atlas")
+	if split[1] == "":
+		img_tex.resource_name = split[0]
+	else:
+		img_tex.resource_name = _name
 	tile_textures[idx].append(img_tex)
 
 func set_map_plugin(m: EditorPlugin) -> void:
@@ -165,4 +178,6 @@ func update_func(value: bool) -> void:
 	#ProjectSettings.set("display/mouse_cursor/custom_image", load("res://Images/closet.png"))
 	pass
 
-
+func _on_ObjectsMap_tree_exiting() -> void:
+	draw_grid = false
+	pass

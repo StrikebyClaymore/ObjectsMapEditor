@@ -1,0 +1,18 @@
+[gd_scene format=2]
+
+[node name="BasicObject" type="KinematicBody2D"]
+input_pickable = true
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}

@@ -9,15 +9,35 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "BaseKinematicBody",
+"language": "GDScript",
+"path": "res://Old/BaseKinematicBody.gd"
+}, {
+"base": "",
+"class": "BasicObject",
+"language": "GDScript",
+"path": "res://Old/BasicObject.gd"
+}, {
+"base": "",
+"class": "Closet",
+"language": "GDScript",
+"path": "res://Old/Closet.gd"
+}, {
+"base": "Closet",
+"class": "ClosetWithLock",
+"language": "GDScript",
+"path": "res://Old/ClosetWithLock.gd"
+}, {
 "base": "Button",
 "class": "MapObject",
 "language": "GDScript",
 "path": "res://addons/ObjectsMapEditor/MapObject.gd"
 }, {
-"base": "Node2D",
+"base": "TileMap",
 "class": "ObjectsMap",
 "language": "GDScript",
-"path": "res://ObjectsMap.gd"
+"path": "res://Old/ObjectsMap.gd"
 }, {
 "base": "Resource",
 "class": "ObjectsSet",
@@ -25,6 +45,10 @@ _global_script_classes=[ {
 "path": "res://Resources/ObjectsSet.gd"
 } ]
 _global_script_class_icons={
+"BaseKinematicBody": "",
+"BasicObject": "",
+"Closet": "",
+"ClosetWithLock": "",
 "MapObject": "",
 "ObjectsMap": "",
 "ObjectsSet": ""
@@ -35,6 +59,10 @@ _global_script_class_icons={
 config/name="ObjectsMapEditor"
 run/main_scene="res://World.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+FileSystem="*res://FileSystem.gd"
 
 [editor_plugins]
 
@@ -61,6 +89,19 @@ texture={
 "size_limit": 0,
 "stream": false,
 "svg/scale": 1.0
+}
+
+[input]
+
+left_click={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+right_click={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
+ ]
 }
 
 [rendering]
